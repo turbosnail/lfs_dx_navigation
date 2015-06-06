@@ -1,3 +1,7 @@
+
+#pragma warning(disable: 4996)
+
+
 // proxydll.cpp
 #include "stdafx.h"
 #include "proxydll.h"

@@ -21,9 +21,6 @@
     <ClCompile Include="myIDirect3DDevice9.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="proxydll.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -33,11 +30,25 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="cinsim\cinsim.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="positioning.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ProxyDll\proxydll.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GAMEINFO.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="proxydll.def">
+    <None Include="ProxyDll\proxydll.def">
       <Filter>Quelldateien</Filter>
     </None>
+    <None Include="CInsim\pthreadVC2.dll" />
+    <None Include=".clang-format" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="myIDirect3D9.h">
@@ -46,17 +57,35 @@
     <ClInclude Include="myIDirect3DDevice9.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="proxydll.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="LFSNavSystem.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="cinsim\pthread.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="cinsim\cinsim.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="cinsim\insim.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="cinsim\sched.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ProxyDll\proxydll.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="GAMEINFO.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="CInsim\pthreadVC2.lib" />
   </ItemGroup>
 </Project>
