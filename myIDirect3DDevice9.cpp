@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include "myIDirect3DDevice9.h"
 
 myIDirect3DDevice9::myIDirect3DDevice9(IDirect3DDevice9* pOriginal)
 {

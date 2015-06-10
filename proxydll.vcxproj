@@ -42,22 +42,22 @@
     <OutDir>Debug\</OutDir>
     <IntDir>Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(DirectXSDKDir)Include;.\cinsim;$(IncludePath)</IncludePath>
+    <IncludePath>$(DirectXSDK)\Include;.\CInsim;.\PThreads;$(IncludePath)</IncludePath>
     <TargetName>d3d9</TargetName>
-    <LibraryPath>.\cinsim;$(LibraryPath)</LibraryPath>
+    <LibraryPath>.\PThreads;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>Release\</OutDir>
     <IntDir>Release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\MSDXSDK\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(MSDXSDKDir)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PROXYDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -65,15 +65,15 @@
       <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Winmm.lib;d3dx9.lib;pthreadVC2.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;d3dx9.lib;pthreadVC1.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ProxyDll\proxydll.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>$(DirectXSDKDir)Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DirectXSDK)\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy .\Debug\d3d9.dll W:\LFS\d3d9.dll</Command>
+      <Command>copy .\Debug\d3d9.dll $(LFS)\d3d9.dll</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -94,7 +94,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <ImportLibrary>$(OutDir)proxydll.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>D:\MSDXSDK\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSDXSDKDir)\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -106,12 +106,9 @@
     </ClCompile>
     <ClCompile Include="myIDirect3D9.cpp" />
     <ClCompile Include="myIDirect3DDevice9.cpp" />
-    <ClCompile Include="GAMEINFO.cpp" />
-    <ClCompile Include="positioning.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="CGAMEINFO.cpp" />
     <ClCompile Include="ProxyDll\proxydll.cpp" />
-    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="CMAP.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -121,6 +118,9 @@
     <None Include=".clang-format" />
     <None Include="CInsim\pthreadVC2.dll" />
     <None Include="ProxyDll\proxydll.def" />
+    <None Include="PThreads\pthreadVC1.dll" />
+    <None Include="PThreads\pthreadVSE1.dll" />
+    <None Include="ToLFSDir.7z" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cinsim\cinsim.h" />
@@ -130,13 +130,17 @@
     <ClInclude Include="LFSNavSystem.h" />
     <ClInclude Include="myIDirect3D9.h" />
     <ClInclude Include="myIDirect3DDevice9.h" />
-    <ClInclude Include="GAMEINFO.h" />
+    <ClInclude Include="CGAMEINFO.h" />
     <ClInclude Include="ProxyDll\proxydll.h" />
-    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="PThreads\pthread.h" />
+    <ClInclude Include="PThreads\sched.h" />
+    <ClInclude Include="PThreads\semaphore.h" />
+    <ClInclude Include="CMAP.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="CInsim\pthreadVC2.lib" />
+    <Library Include="PThreads\pthreadVC1.lib" />
+    <Library Include="PThreads\pthreadVSE1.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

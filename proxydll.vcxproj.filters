@@ -27,19 +27,16 @@
     <ClCompile Include="LFSNavSystem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="cinsim\cinsim.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="positioning.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ProxyDll\proxydll.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="GAMEINFO.cpp">
+    <ClCompile Include="CGAMEINFO.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CMAP.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -49,6 +46,9 @@
     </None>
     <None Include="CInsim\pthreadVC2.dll" />
     <None Include=".clang-format" />
+    <None Include="PThreads\pthreadVC1.dll" />
+    <None Include="PThreads\pthreadVSE1.dll" />
+    <None Include="ToLFSDir.7z" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="myIDirect3D9.h">
@@ -78,14 +78,24 @@
     <ClInclude Include="ProxyDll\proxydll.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
+    <ClInclude Include="PThreads\pthread.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="GAMEINFO.h">
+    <ClInclude Include="PThreads\semaphore.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PThreads\sched.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="CGAMEINFO.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="CMAP.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="CInsim\pthreadVC2.lib" />
+    <Library Include="PThreads\pthreadVC1.lib" />
+    <Library Include="PThreads\pthreadVSE1.lib" />
   </ItemGroup>
 </Project>

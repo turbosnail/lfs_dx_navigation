@@ -1,8 +1,8 @@
 #include "stdafx.h"
+#include "LFSNavSystem.h"
 
-//Temp
-//std::ostringstream s;
 #include <sstream>
+using namespace std;
 
 LFSNavSystem *LFSNavSystem::self = nullptr;
 
@@ -15,11 +15,10 @@ LFSNavSystem *LFSNavSystem::getInstance()
 
 LFSNavSystem::LFSNavSystem()
 	{
-	mapX = 0;
-	mapY = 0;
+	vec2ImagePlayerPos = D3DXVECTOR2(0,0);
 
 	//the way to start Insim witouth blocking game graphic
-	pthread_create(&ThInfo, NULL, &GAMEINFO::DataLoop, (void*)(&GameInfo));
+	pthread_create(&ThInfo, NULL, &GAMEINFO::DataLoop, NULL);
 	}
 
 LFSNavSystem::~LFSNavSystem()
@@ -40,8 +39,8 @@ void LFSNavSystem::Initialize(IDirect3DDevice9 *pD3DDevice)
 
 	m_pD3DDevice = pD3DDevice;
 
-	map = new Sprite();
-	map->Initialize(pD3DDevice, "LFSNavSystem\\WE.jpg");
+	PMap = new MAP();
+	PMap->Initialize(pD3DDevice, MAP_FILE_NAME, MASK_FILE_NAME);
 
 	frameCount = 0;
 	frameSec = timeGetTime();
@@ -49,17 +48,17 @@ void LFSNavSystem::Initialize(IDirect3DDevice9 *pD3DDevice)
 
 void LFSNavSystem::Realize()
 	{
-	if(map) delete map;
+	if(PMap) delete PMap;
 	}
 
 void LFSNavSystem::OnLostDevice()
 	{
-	if(map) map->OnLostDevice();
+	if(PMap) PMap->OnLostDevice();
 	}
 
 void LFSNavSystem::OnResetDevice()
 	{
-	if(map) map->OnResetDevice();
+	if(PMap) PMap->OnResetDevice();
 	}
 
 void LFSNavSystem::Render()
@@ -69,24 +68,24 @@ void LFSNavSystem::Render()
 	D3DVIEWPORT9 vp;
 	m_pD3DDevice->GetViewport(&vp);
 
-	window_aspect = (float)(vp.Width / vp.Height);
-	window_offset = 0;
-	if(window_aspect >= 3)
-		{
-		vp.Width /= 3;
-		window_offset = (float)vp.Width;
-		}
-	render_width = (float)(vp.Width);
-	render_height = (float)(vp.Height);
+// 	window_aspect = (float)(vp.Width / vp.Height);
+// 	window_offset = 0;
+// 	if(window_aspect >= 3)
+// 		{
+// 		vp.Width /= 3;
+// 		window_offset = (float)vp.Width;
+// 		}
+// 		
+	ScreenWidth = (float)(vp.Width);
+	ScreenHeight = (float)(vp.Height);
 
-	//какая-то проблема с координатами при отрисовке, т.к. игровые координаты точно проецируются на изображение
-	if(map) map->SetRenderWH(render_width, render_height);
-	if(map) map->Draw(render_width - 200, render_height - 200, mapX - 100, mapY - 100, 200, 200, 0, 1);
+	static D3DXVECTOR2 _vec2LastPos;
+	_vec2LastPos.x = float(GAMEINFO::LastPlayerCar.X);
+	_vec2LastPos.y = float(GAMEINFO::LastPlayerCar.Y);
+	MapInGamePosToPic(_vec2LastPos, vec2ImagePlayerPos);
 
-	MapInGamePosToPic(GAMEINFO::PlayerMCI.Info[0].X, GAMEINFO::PlayerMCI.Info[0].Y, mapX, mapY);
-
-	//if(mapX > (1280 - 200)) mapX = 0;
-	//if(mapY > (1280 - 200)) mapY = 0;
+	if(PMap) PMap->SetRender(D3DXVECTOR2(MAP_POSX, MAP_POSY), D3DXVECTOR2( MASK_IMAGE_SIZE-50, MASK_IMAGE_SIZE-50));
+	if(PMap) PMap->Draw(vec2ImagePlayerPos, GAMEINFO::LastPlayerCar.Heading * float(M_PI) / 32768.0f , 0.1f);
 
 	_frameSec = timeGetTime();
 	frameCount++;
@@ -97,21 +96,31 @@ void LFSNavSystem::Render()
 	// m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 	}
 
-void LFSNavSystem::MapInGamePosToPic( int X, int Y, float& OutX, float& OutY )
+void LFSNavSystem::MapInGamePosToPic( D3DXVECTOR2& vec2InGamePos, D3DXVECTOR2& Outvec2ImagePos )
 	{
 	//функция точно корректная игровые координаты-> изображение
 	//проблема с отрисовкой
-	OutX = 0.00001f * X + 1024;
-	OutY = -0.00001f * Y + 1024;
+	Outvec2ImagePos.x = MAP_IMAGE_SCALE_FACTOR * vec2InGamePos.x + MAP_IMAGE_WIDTH / 2;
+	Outvec2ImagePos.y = -MAP_IMAGE_SCALE_FACTOR * vec2InGamePos.y + MAP_IMAGE_HEIGHT / 2;
 
 
-	if (rand() > 32755)
-		{
-		//Temp
-		std::ostringstream s;
-		s << "X " << X  << " Y " << Y << "    ";
-		s << "mapX " << OutX  << " mapY " << OutY;
-		const std::string Str(s.str());	
-		GameInfo.Insim.SendMSX(Str);
-		}
+// 	if (rand() > 32755)
+// 		{
+// 		GAMEINFO::LocalMessageBuf << "X " << vec2InGamePos  << " Y " << Outvec2ImagePos << "    ";
+// 		GAMEINFO::LocalMessageBuf << "mapX " << OutX  << " mapY " << OutY;
+// 		GAMEINFO::SendLocalMessage();
+// 		}
+	}
+
+void SendLocalMessage(std::ostringstream s)
+	{
+	const std::string Str(s.str());	
+
+	IS_MSL *pack = new IS_MSL;
+	memset(pack, 0, sizeof(IS_MSL));
+	pack->Size = sizeof(IS_MSL);
+	pack->Type = ISP_MSL;
+	strcpy(pack->Msg, Str.c_str());
+	GAMEINFO::Insim.send_packet(pack);
+	delete pack;
 	}

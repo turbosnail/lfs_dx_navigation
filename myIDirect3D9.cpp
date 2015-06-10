@@ -1,6 +1,7 @@
 // myIDirect3D9.cpp
-
 #include "StdAfx.h"
+#include "myIDirect3D9.h"
+#include "myIDirect3DDevice9.h"
 
 myIDirect3D9::myIDirect3D9(IDirect3D9 *pOriginal)
 {

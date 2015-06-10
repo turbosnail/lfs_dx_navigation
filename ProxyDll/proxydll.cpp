@@ -5,6 +5,8 @@
 // proxydll.cpp
 #include "stdafx.h"
 #include "proxydll.h"
+#include "../myIDirect3DDevice9.h"
+#include "../myIDirect3D9.h"
 
 // global variables
 #pragma data_seg (".d3d9_shared")

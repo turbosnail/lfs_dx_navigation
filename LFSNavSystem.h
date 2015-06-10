@@ -1,11 +1,21 @@
 #pragma once
 
-#include "Sprite.h"
+#include "CMAP.h"
 #include "cinsim.h"
-#include "GAMEINFO.h"
+#include "CGAMEINFO.h"
 
-#define MAP_MAX_WIDTH 2560;
-#define MAP_MAX_HEIGHT 2560;
+//индусим
+#define MAP_IMAGE_SCALE_FACTOR 0.00001208f
+#define MAP_IMAGE_WIDTH 2048
+#define MAP_IMAGE_HEIGHT 2048
+
+#define MAP_POSX 100
+#define MAP_POSY 100
+
+#define MASK_IMAGE_SIZE 512
+
+#define MAP_FILE_NAME "LFSNavSystem\\WE.jpg"
+#define MASK_FILE_NAME "LFSNavSystem\\Mask.png"
 
 class LFSNavSystem
 {
@@ -23,26 +33,23 @@ private:
 	LFSNavSystem();
 	~LFSNavSystem();
 
-	void MapInGamePosToPic(int X, int Y, float& OutX, float& OutY);
+	void MapInGamePosToPic(D3DXVECTOR2& vec2InGamePos, D3DXVECTOR2& Outvec2ImagePos);
 
 	static LFSNavSystem *self;
 
 	IDirect3DDevice9*	m_pD3DDevice;
 
-	Sprite *map;
+	MAP *PMap;
 
 	int					frameCount;
 	DWORD	frameSec, _frameSec;
 
-	float			window_aspect;
-	float			window_offset;
-	float			render_width;
-	float			render_height;
+	float			ScreenWidth;
+	float			ScreenHeight;
 
-	float mapX;
-	float mapY;
+
+	D3DXVECTOR2 vec2ImagePlayerPos;
 
 	//Ingame data
-	GAMEINFO GameInfo;
 	pthread_t ThInfo;
 };
